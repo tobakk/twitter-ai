@@ -1,0 +1,46 @@
+plugins {
+    id("org.springframework.boot") version "2.2.5.RELEASE"
+    id("io.spring.dependency-management") version "1.0.9.RELEASE"
+    id 'idea'
+    id 'java'
+    id 'maven'
+}
+
+group = "io.zenja"
+version = "1.0.0"
+
+sourceCompatibility = 1.11
+targetCompatibility = 1.11
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+}
+task(type: Jar, dependsOn: "jar") {
+    from("src/main/python") {
+        into "META-INF/resources"
+    }
+}
+jar {
+    sourceSets {
+        main {
+            resources {
+                srcDir 'src/main/python/'
+            }
+        }
+    }
+}
+dependencies {
+    implementation("org.twitter4j:twitter4j-core:4.0.6")
+
+    implementation("org.springframework.boot:spring-boot-starter-actuator")
+    implementation("org.springframework.boot:spring-boot-starter-quartz")
+    implementation("org.springframework.boot:spring-boot-starter-web")
+
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+    compile group: 'commons-io', name: 'commons-io', version: '2.6'
+
+    compileOnly("org.projectlombok:lombok")
+    annotationProcessor("org.projectlombok:lombok")
+}
